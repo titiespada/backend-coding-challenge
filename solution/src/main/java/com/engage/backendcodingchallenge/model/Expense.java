@@ -31,6 +31,15 @@ public class Expense implements Serializable {
 
 	@Column(name = "reason", nullable = false, length = 200)
 	private String reason;
+	
+	public Expense() {}
+	
+	public Expense(Integer id, LocalDate date, Double value, String reason) {
+		this.id = id;
+		this.date = date;
+		this.value = value;
+		this.reason = reason;
+	}
 
 	public Integer getId() {
 		return this.id;

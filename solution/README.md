@@ -1,6 +1,5 @@
 README
 ====
-How to run the your solution...
 
 # Specifications
 
@@ -11,6 +10,7 @@ How to run the your solution...
 *	Liquibase
 *	Hibernate
 *	Jackson
+*	ExchangeRate API (to get the rate for converting EUR to GBP)
 
 # Init
 
@@ -31,8 +31,9 @@ Make sure you have MySQL running with the schema **backendcodingchallenge** prev
 To get the application up and running, you will need to:
 
 1.  Compile the client (exec the command over the project root directory): `gulp dev`
-2.  Run the server (exec the command over the solution directory): `mvn spring-boot:run`
+2.  Run the server (exec the command over the solution directory): `mvn clean spring-boot:run`
+3.	Run the tests (exec the command over the solution directory): `mvn clean test`
 
-IMPORTANT
-====
-To avoid unconcious bias, we aim to have your submission reviewed anonymously by one of our engineering team. Please try and avoid adding personal details to this document such as your name, or using pronouns that might indicate your gender.
+# Future Improvements
+
+*   Erro Handling: to give feedback to the client side in case of error (this would be a change in server and in the client side).

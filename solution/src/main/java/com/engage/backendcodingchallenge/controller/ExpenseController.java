@@ -37,7 +37,7 @@ public class ExpenseController {
 	private ExpenseService expenseService;
 	
 	@Autowired
-	private ExchangerateApiService  exchangeApiService;
+	private ExchangerateApiService exchangeApiService;
 
 	@GetMapping
 	public ResponseEntity<List<ExpenseDto>> getAll() {
@@ -83,7 +83,7 @@ public class ExpenseController {
     		expenseDto = ExpenseDto.createExpenseDto(expense);
     		
     		logger.debug("Returning saved expense: " + expenseDto.toString());
-        return new ResponseEntity<>(expenseDto, HttpStatus.OK);
+        return new ResponseEntity<>(expenseDto, HttpStatus.CREATED);
     }
     
     private ExpenseDto parseValueWithCurrency(ExpenseDto expenseDto) {
