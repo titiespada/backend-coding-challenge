@@ -73,7 +73,7 @@ public class Expense implements Serializable {
 		Expense expense = new Expense();
 		expense.setId(expenseDto.getId());	
 		expense.setDate(expenseDto.getDate());
-		expense.setValue(expenseDto.getValue());
+		expense.setValue(expenseDto.getGbpValue());
 		expense.setReason(expenseDto.getReason());
 		return expense;
 	}

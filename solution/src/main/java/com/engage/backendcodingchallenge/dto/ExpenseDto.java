@@ -3,7 +3,6 @@ package com.engage.backendcodingchallenge.dto;
 import java.io.Serializable;
 import java.time.LocalDate;
 
-import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -24,15 +23,17 @@ public class ExpenseDto implements Serializable {
 	private LocalDate date;
 	
 	@NotNull
-	@Min(value=0)
 	@JsonProperty("amount")
-	private Double value;
+	@JsonFormat(pattern="^\\d+(\\.)\\d{2}( EUR)?$")
+	private String value;
 	
 	private Double vat;
 	
 	@NotBlank
 	@Size(max=200)
 	private String reason;
+	
+	private Double gbpValue;
 
 	public Integer getId() {
 		return id;
@@ -50,11 +51,11 @@ public class ExpenseDto implements Serializable {
 		this.date = date;
 	}
 	
-	public Double getValue() {
+	public String getValue() {
 		return value;
 	}
 	
-	public void setValue(Double value) {
+	public void setValue(String value) {
 		this.value = value;
 	}
 	
@@ -66,8 +67,16 @@ public class ExpenseDto implements Serializable {
 		this.reason = reason;
 	}
 	
+	public Double getGbpValue() {
+		return gbpValue;
+	}
+	
+	public void setGbpValue(Double gbpValue) {
+		this.gbpValue = gbpValue;
+	}
+	
 	public Double getVat() {
-		return Double.valueOf(value.doubleValue() - (value.doubleValue() / 1.2));
+		return Double.valueOf(gbpValue.doubleValue() - (gbpValue.doubleValue() / 1.2));
 	}
 	
 	@Override
@@ -79,8 +88,9 @@ public class ExpenseDto implements Serializable {
 		ExpenseDto expenseDto = new ExpenseDto();
 		expenseDto.setId(expense.getId());
 		expenseDto.setDate(expense.getDate());
-		expenseDto.setValue(expense.getValue());
+		expenseDto.setValue(expense.getValue().toString());
 		expenseDto.setReason(expense.getReason());
+		expenseDto.setGbpValue(expense.getValue());
 		return expenseDto;
 	}
 

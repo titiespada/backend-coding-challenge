@@ -18,8 +18,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.engage.backendcodingchallenge.dto.CurrencyRateDto;
 import com.engage.backendcodingchallenge.dto.ExpenseDto;
 import com.engage.backendcodingchallenge.model.Expense;
+import com.engage.backendcodingchallenge.service.ExchangerateApiService;
 import com.engage.backendcodingchallenge.service.ExpenseService;
 
 @RestController
@@ -28,8 +30,14 @@ public class ExpenseController {
 	
 	private static final Logger logger = LoggerFactory.getLogger(ExpenseController.class);
 	
+	private static final String GBP_CURRENCY = "GBP";
+	private static final String EUR_CURRENCY = "EUR";
+	
 	@Autowired
 	private ExpenseService expenseService;
+	
+	@Autowired
+	private ExchangerateApiService  exchangeApiService;
 
 	@GetMapping
 	public ResponseEntity<List<ExpenseDto>> getAll() {
@@ -63,7 +71,9 @@ public class ExpenseController {
     @PostMapping
     public ResponseEntity<ExpenseDto> save(@Valid @RequestBody(required=true) ExpenseDto expenseDto) {
     		logger.debug("Save expense:" + expenseDto.toString());
-    	
+    		
+    		expenseDto = parseValueWithCurrency(expenseDto);
+    		
     		Expense expense = Expense.createExpense(expenseDto);
     		expense = expenseService.save(expense);
     		if (expense == null) {
@@ -74,6 +84,22 @@ public class ExpenseController {
     		
     		logger.debug("Returning saved expense: " + expenseDto.toString());
         return new ResponseEntity<>(expenseDto, HttpStatus.OK);
+    }
+    
+    private ExpenseDto parseValueWithCurrency(ExpenseDto expenseDto) {
+    		String value = expenseDto.getValue();
+    	
+    		if (value.contains(EUR_CURRENCY)) {
+    			Double valueWithoutCurrency = Double.valueOf(value.replace(EUR_CURRENCY, "").trim());
+    			
+    			CurrencyRateDto currencyRateDto = exchangeApiService.callRestService(EUR_CURRENCY, GBP_CURRENCY);
+    			
+    			expenseDto.setGbpValue(valueWithoutCurrency * currencyRateDto.getRate());
+    		} else {
+    			expenseDto.setGbpValue(Double.valueOf(value));	
+    		}
+    		
+    		return expenseDto;
     }
     
 }
