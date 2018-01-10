@@ -6,6 +6,8 @@ This will be copied to config.js by the CI Server as part of the test build proc
 
 module.exports = {
 	// Build target directory, this is where all the static files will end up
+	//target: "./static",
+	//htmltarget: "./static",
 	target: "./solution/src/main/resources/static",
 	htmltarget: "./solution/src/main/resources/static",
 
