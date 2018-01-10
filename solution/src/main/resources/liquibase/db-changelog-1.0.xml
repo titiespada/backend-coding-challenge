@@ -1,0 +1,21 @@
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+
+	<changeSet id="db-changelog-1.0.xml" author="patricia.espada">
+		<sql><![CDATA[
+			CREATE TABLE `expense` (
+				`id` INT(11) NOT NULL AUTO_INCREMENT,
+				`date` DATE NOT NULL,
+				`value` DOUBLE NOT NULL,
+				`reason` VARCHAR(200) NOT NULL,
+				PRIMARY KEY (`id`)
+			);
+
+			INSERT INTO `expense` (`id`, `date`, `value`, `reason`) VALUES (1, CURDATE(), 10.59, 'Dinner'), (2, CURDATE(), 50.35, 'Gym'); 
+		]]></sql>
+		<rollback></rollback>
+	</changeSet>
+
+</databaseChangeLog>
