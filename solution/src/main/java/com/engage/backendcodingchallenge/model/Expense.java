@@ -1,6 +1,7 @@
 package com.engage.backendcodingchallenge.model;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
 import javax.persistence.Column;
@@ -27,14 +28,14 @@ public class Expense implements Serializable {
 	private LocalDate date;
 	
 	@Column(name = "value", nullable = false)
-	private Double value;
+	private BigDecimal value;
 
 	@Column(name = "reason", nullable = false, length = 200)
 	private String reason;
 	
 	public Expense() {}
 	
-	public Expense(Integer id, LocalDate date, Double value, String reason) {
+	public Expense(Integer id, LocalDate date, BigDecimal value, String reason) {
 		this.id = id;
 		this.date = date;
 		this.value = value;
@@ -57,11 +58,11 @@ public class Expense implements Serializable {
 		this.date = date;
 	}
 
-	public Double getValue() {
+	public BigDecimal getValue() {
 		return this.value;
 	}
 
-	public void setValue(Double value) {
+	public void setValue(BigDecimal value) {
 		this.value = value;
 	}
 

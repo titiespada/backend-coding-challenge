@@ -1,6 +1,7 @@
 package com.engage.backendcodingchallenge.dto;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
 import javax.validation.constraints.NotNull;
@@ -33,7 +34,7 @@ public class ExpenseDto implements Serializable {
 	@Size(max=200)
 	private String reason;
 	
-	private Double gbpValue;
+	private BigDecimal gbpValue;
 
 	public Integer getId() {
 		return id;
@@ -67,11 +68,11 @@ public class ExpenseDto implements Serializable {
 		this.reason = reason;
 	}
 	
-	public Double getGbpValue() {
+	public BigDecimal getGbpValue() {
 		return gbpValue;
 	}
 	
-	public void setGbpValue(Double gbpValue) {
+	public void setGbpValue(BigDecimal gbpValue) {
 		this.gbpValue = gbpValue;
 	}
 	

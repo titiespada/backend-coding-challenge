@@ -1,5 +1,6 @@
 package com.engage.backendcodingchallenge.controller;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -90,13 +91,13 @@ public class ExpenseController {
     		String value = expenseDto.getValue();
     	
     		if (value.contains(EUR_CURRENCY)) {
-    			Double valueWithoutCurrency = Double.valueOf(value.replace(EUR_CURRENCY, "").trim());
+    			BigDecimal valueWithoutCurrency = new BigDecimal(value.replace(EUR_CURRENCY, "").trim());
     			
     			CurrencyRateDto currencyRateDto = exchangeApiService.callRestService(EUR_CURRENCY, GBP_CURRENCY);
     			
-    			expenseDto.setGbpValue(valueWithoutCurrency * currencyRateDto.getRate());
+    			expenseDto.setGbpValue(valueWithoutCurrency.multiply(BigDecimal.valueOf(currencyRateDto.getRate())));
     		} else {
-    			expenseDto.setGbpValue(Double.valueOf(value));	
+    			expenseDto.setGbpValue(new BigDecimal(value));	
     		}
     		
     		return expenseDto;
