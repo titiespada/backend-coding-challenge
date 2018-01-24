@@ -3,7 +3,7 @@ package com.engage.backendcodingchallenge.dto;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.time.LocalDate;
+import java.util.Date;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -22,7 +22,7 @@ public class ExpenseDto implements Serializable {
 	
 	@NotNull
 	@JsonFormat(pattern = "dd/MM/yyyy")
-	private LocalDate date;
+	private Date date;
 	
 	@NotNull
 	@JsonProperty("amount")
@@ -45,12 +45,20 @@ public class ExpenseDto implements Serializable {
 		this.id = id;
 	}
 	
-	public LocalDate getDate() {
-		return date;
+	public Date getDate() {
+		if(date == null) {
+		    return new Date();
+		} else {
+		    return new Date(date.getTime());
+		}
 	}
 	
-	public void setDate(LocalDate date) {
-		this.date = date;
+	public void setDate(Date date) {
+	    if(date == null) {
+	        this.date = new Date();
+	    } else {
+	        this.date = new Date(date.getTime());
+	    }
 	}
 	
 	public String getValue() {

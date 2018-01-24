@@ -29,7 +29,7 @@ import com.engage.backendcodingchallenge.service.ExpenseService;
 @RequestMapping(path = "/app/expenses", produces = MediaType.APPLICATION_JSON_VALUE)
 public class ExpenseController {
 	
-	private static final Logger logger = LoggerFactory.getLogger(ExpenseController.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(ExpenseController.class);
 	
 	private static final String GBP_CURRENCY = "GBP";
 	private static final String EUR_CURRENCY = "EUR";
@@ -42,40 +42,38 @@ public class ExpenseController {
 
 	@GetMapping
 	public ResponseEntity<List<ExpenseDto>> getAll() {
-		logger.debug("Search all expenses");
+		LOGGER.debug("Search all expenses");
 		
 		List<Expense> expenses = expenseService.findAll();
 		List<ExpenseDto> expensesDto = expenses.stream()
 				.map(ExpenseDto::createExpenseDto)
 				.collect(Collectors.toList());
 
-		logger.debug("Returning " + expensesDto.size() + " expenses");
+		LOGGER.debug("Returning {} expenses", expensesDto.size());
 		return new ResponseEntity<>(expensesDto, HttpStatus.OK);
 	}
     
     @GetMapping("/{id}")
     public ResponseEntity<ExpenseDto> get(@PathVariable(value = "id", required = true) Integer id) {
-    		logger.debug("Search for expense with id " + id);
+    		LOGGER.debug("Search for expense with id {}", id);
     		
     		Expense expense = expenseService.findById(id);
     		if (expense == null) {
-    			logger.debug("Expense not found for id " + id);
+    			LOGGER.debug("Expense not found for id {}", id);
     			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     		}
     		
     		ExpenseDto expenseDto = ExpenseDto.createExpenseDto(expense);
     		
-    		logger.debug("Returning expense with id " + id + ": " + expenseDto.toString());
+    		LOGGER.debug("Returning expense with id {}: {}", id, expenseDto);
         return new ResponseEntity<>(expenseDto, HttpStatus.OK);
     }
     
     @PostMapping
     public ResponseEntity<ExpenseDto> save(@Valid @RequestBody(required = true) ExpenseDto expenseDto) {
-    		logger.debug("Save expense:" + expenseDto.toString());
+    		LOGGER.debug("Save expense: {}", expenseDto);
     		
-    		expenseDto = parseValueWithCurrency(expenseDto);
-    		
-    		Expense expense = Expense.createExpense(expenseDto);
+    		Expense expense = Expense.createExpense(parseValueWithCurrency(expenseDto));
     		expense = expenseService.save(expense);
     		if (expense == null) {
     			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -83,7 +81,7 @@ public class ExpenseController {
     		
     		expenseDto = ExpenseDto.createExpenseDto(expense);
     		
-    		logger.debug("Returning saved expense: " + expenseDto.toString());
+    		LOGGER.debug("Returning saved expense: {}", expenseDto);
         return new ResponseEntity<>(expenseDto, HttpStatus.CREATED);
     }
     

@@ -18,7 +18,7 @@ public class ExpenseServiceImpl implements ExpenseService {
 	@Override
 	public List<Expense> findAll() {
 		List<Expense> expenses = new ArrayList<>();
-		expenseRepository.findAll().forEach(e -> expenses.add(e));
+		expenseRepository.findAll().forEach(expenses::add);
 		return expenses;
 	}
 
