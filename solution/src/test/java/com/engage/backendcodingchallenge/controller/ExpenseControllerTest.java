@@ -44,11 +44,11 @@ public class ExpenseControllerTest {
 	
 	List<Expense> mockExpenses = new ArrayList<>(
 			Arrays.asList(
-					new Expense(1, LocalDate.now(), new BigDecimal(12.45), "Dinner"),
-					new Expense(2, LocalDate.now(), new BigDecimal(5.99), "Pharmacy"),
-					new Expense(3, LocalDate.now(), new BigDecimal(678.68), "House")
+					new Expense(1, LocalDate.now(), BigDecimal.valueOf(12.45), "Dinner"),
+					new Expense(2, LocalDate.now(), BigDecimal.valueOf(5.99), "Pharmacy"),
+					new Expense(3, LocalDate.now(), BigDecimal.valueOf(678.68), "House")
 			));
-	Expense mockExpense = new Expense(1, LocalDate.now(), new BigDecimal(12.45), "Dinner");
+	Expense mockExpense = new Expense(1, LocalDate.now(), BigDecimal.valueOf(12.45), "Dinner");
 	
 	@Test
 	public void getAll() throws Exception {
@@ -87,7 +87,7 @@ public class ExpenseControllerTest {
 		Expense newExpenseMock = new Expense();
 		newExpenseMock.setId(4);
 		newExpenseMock.setDate(LocalDate.now());
-		newExpenseMock.setValue(new BigDecimal(1.87));
+		newExpenseMock.setValue(BigDecimal.valueOf(1.87));
 		newExpenseMock.setReason("Coffe");
 
 		Mockito.when(expenseService.save(Mockito.any(Expense.class))).thenReturn(newExpenseMock);
@@ -111,7 +111,7 @@ public class ExpenseControllerTest {
 		Expense newExpenseMock = new Expense();
 		newExpenseMock.setId(4);
 		newExpenseMock.setDate(LocalDate.now());
-		newExpenseMock.setValue(new BigDecimal(1.87));
+		newExpenseMock.setValue(BigDecimal.valueOf(1.87));
 		newExpenseMock.setReason("Coffe");
 		
 		CurrencyRateDto currencyRateMock = new CurrencyRateDto();

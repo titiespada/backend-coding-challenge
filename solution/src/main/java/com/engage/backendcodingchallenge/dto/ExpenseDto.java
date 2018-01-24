@@ -2,6 +2,7 @@ package com.engage.backendcodingchallenge.dto;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDate;
 
 import javax.validation.constraints.NotNull;
@@ -20,18 +21,18 @@ public class ExpenseDto implements Serializable {
 	private Integer id;
 	
 	@NotNull
-	@JsonFormat(pattern="dd/MM/yyyy")
+	@JsonFormat(pattern = "dd/MM/yyyy")
 	private LocalDate date;
 	
 	@NotNull
 	@JsonProperty("amount")
-	@JsonFormat(pattern="^\\d+(\\.)\\d{2}( EUR)?$")
+	@JsonFormat(pattern = "^\\d+(\\.)\\d{2}( EUR)?$")
 	private String value;
 	
-	private Double vat;
+	private BigDecimal vat;
 	
 	@NotBlank
-	@Size(max=200)
+	@Size(max = 200)
 	private String reason;
 	
 	private BigDecimal gbpValue;
@@ -76,13 +77,21 @@ public class ExpenseDto implements Serializable {
 		this.gbpValue = gbpValue;
 	}
 	
-	public Double getVat() {
-		return Double.valueOf(gbpValue.doubleValue() - (gbpValue.doubleValue() / 1.2));
+	public BigDecimal getVat() {
+		return this.vat;
+	}
+	
+	public void setVat(BigDecimal vat) {
+		this.vat = vat;
 	}
 	
 	@Override
 	public String toString() {
-		return "ExpenseDto [id=" + id + ", date=" + date + ", value=" + value + ", vat=" + vat + ", reason=" + reason + "]";
+		return "ExpenseDto [id=" + id + ", date=" + date + ", value=" + value + ", reason=" + reason + "]";
+	}
+	
+	private static BigDecimal calculateVat(BigDecimal amount) {
+		return amount.subtract(amount.divide(BigDecimal.valueOf(1.2), 2, RoundingMode.HALF_UP));
 	}
 
 	public static ExpenseDto createExpenseDto(Expense expense) {
@@ -92,6 +101,7 @@ public class ExpenseDto implements Serializable {
 		expenseDto.setValue(expense.getValue().toString());
 		expenseDto.setReason(expense.getReason());
 		expenseDto.setGbpValue(expense.getValue());
+		expenseDto.setVat(calculateVat(expense.getValue()));
 		return expenseDto;
 	}
 

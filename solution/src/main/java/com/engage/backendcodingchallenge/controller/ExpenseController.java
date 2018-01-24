@@ -26,7 +26,7 @@ import com.engage.backendcodingchallenge.service.ExchangerateApiService;
 import com.engage.backendcodingchallenge.service.ExpenseService;
 
 @RestController
-@RequestMapping(path="/app/expenses", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(path = "/app/expenses", produces = MediaType.APPLICATION_JSON_VALUE)
 public class ExpenseController {
 	
 	private static final Logger logger = LoggerFactory.getLogger(ExpenseController.class);
@@ -54,7 +54,7 @@ public class ExpenseController {
 	}
     
     @GetMapping("/{id}")
-    public ResponseEntity<ExpenseDto> get(@PathVariable(value="id", required=true) Integer id) {
+    public ResponseEntity<ExpenseDto> get(@PathVariable(value = "id", required = true) Integer id) {
     		logger.debug("Search for expense with id " + id);
     		
     		Expense expense = expenseService.findById(id);
@@ -70,7 +70,7 @@ public class ExpenseController {
     }
     
     @PostMapping
-    public ResponseEntity<ExpenseDto> save(@Valid @RequestBody(required=true) ExpenseDto expenseDto) {
+    public ResponseEntity<ExpenseDto> save(@Valid @RequestBody(required = true) ExpenseDto expenseDto) {
     		logger.debug("Save expense:" + expenseDto.toString());
     		
     		expenseDto = parseValueWithCurrency(expenseDto);

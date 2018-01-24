@@ -10,7 +10,7 @@ import com.engage.backendcodingchallenge.dto.CurrencyRateDto;
 @Service("exchangerateApiService")
 public class ExchangerateApiServiceImpl implements ExchangerateApiService {
 	
-	private static final String EXCHANGERATE_API_URL= "https://v3.exchangerate-api.com/pair/{key}/{from}/{to}";
+	private static final String EXCHANGERATE_API_URL = "https://v3.exchangerate-api.com/pair/{key}/{from}/{to}";
 	
 	private RestTemplate exchangerateApiRestTemplate;
 	

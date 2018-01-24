@@ -20,7 +20,7 @@ public class Expense implements Serializable {
 	private static final long serialVersionUID = -2994756146947263079L;
 	
 	@Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "id", unique = true, nullable = false)
 	private Integer id;
 	
@@ -33,7 +33,7 @@ public class Expense implements Serializable {
 	@Column(name = "reason", nullable = false, length = 200)
 	private String reason;
 	
-	public Expense() {}
+	public Expense() { }
 	
 	public Expense(Integer id, LocalDate date, BigDecimal value, String reason) {
 		this.id = id;
