@@ -24,6 +24,7 @@ import com.engage.backendcodingchallenge.dto.ExpenseDto;
 import com.engage.backendcodingchallenge.model.Expense;
 import com.engage.backendcodingchallenge.service.ExchangerateApiService;
 import com.engage.backendcodingchallenge.service.ExpenseService;
+import com.engage.backendcodingchallenge.util.ExpenseUtil;
 
 @RestController
 @RequestMapping(path = "/app/expenses", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -46,7 +47,7 @@ public class ExpenseController {
 		
 		List<Expense> expenses = expenseService.findAll();
 		List<ExpenseDto> expensesDto = expenses.stream()
-				.map(ExpenseDto::createExpenseDto)
+				.map(ExpenseUtil::createDto)
 				.collect(Collectors.toList());
 
 		LOGGER.debug("Returning {} expenses", expensesDto.size());
@@ -63,7 +64,7 @@ public class ExpenseController {
     			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     		}
     		
-    		ExpenseDto expenseDto = ExpenseDto.createExpenseDto(expense);
+    		ExpenseDto expenseDto = ExpenseUtil.createDto(expense);
     		
     		LOGGER.debug("Returning expense with id {}: {}", id, expenseDto);
         return new ResponseEntity<>(expenseDto, HttpStatus.OK);
@@ -73,13 +74,13 @@ public class ExpenseController {
     public ResponseEntity<ExpenseDto> save(@Valid @RequestBody(required = true) ExpenseDto expenseDto) {
     		LOGGER.debug("Save expense: {}", expenseDto);
     		
-    		Expense expense = Expense.createExpense(parseValueWithCurrency(expenseDto));
+    		Expense expense = ExpenseUtil.createModel(parseValueWithCurrency(expenseDto));
     		expense = expenseService.save(expense);
     		if (expense == null) {
     			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     		}
     		
-    		expenseDto = ExpenseDto.createExpenseDto(expense);
+    		expenseDto = ExpenseUtil.createDto(expense);
     		
     		LOGGER.debug("Returning saved expense: {}", expenseDto);
         return new ResponseEntity<>(expenseDto, HttpStatus.CREATED);

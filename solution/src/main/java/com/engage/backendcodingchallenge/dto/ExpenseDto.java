@@ -2,7 +2,6 @@ package com.engage.backendcodingchallenge.dto;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.util.Date;
 
 import javax.validation.constraints.NotNull;
@@ -10,7 +9,6 @@ import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.NotBlank;
 
-import com.engage.backendcodingchallenge.model.Expense;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -96,21 +94,6 @@ public class ExpenseDto implements Serializable {
 	@Override
 	public String toString() {
 		return "ExpenseDto [id=" + id + ", date=" + date + ", value=" + value + ", reason=" + reason + "]";
-	}
-	
-	private static BigDecimal calculateVat(BigDecimal amount) {
-		return amount.subtract(amount.divide(BigDecimal.valueOf(1.2), 2, RoundingMode.HALF_UP));
-	}
-
-	public static ExpenseDto createExpenseDto(Expense expense) {
-		ExpenseDto expenseDto = new ExpenseDto();
-		expenseDto.setId(expense.getId());
-		expenseDto.setDate(expense.getDate());
-		expenseDto.setValue(expense.getValue().toString());
-		expenseDto.setReason(expense.getReason());
-		expenseDto.setGbpValue(expense.getValue());
-		expenseDto.setVat(calculateVat(expense.getValue()));
-		return expenseDto;
 	}
 
 }

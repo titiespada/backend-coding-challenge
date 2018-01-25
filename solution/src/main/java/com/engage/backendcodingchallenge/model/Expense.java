@@ -11,8 +11,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-import com.engage.backendcodingchallenge.dto.ExpenseDto;
-
 @Entity
 @Table(name = "expense")
 public class Expense implements Serializable {
@@ -85,15 +83,6 @@ public class Expense implements Serializable {
 	@Override
 	public String toString() {
 		return "Expense [id=" + id + ", date=" + date + ", value=" + value + ", reason=" + reason + "]";
-	}
-
-	public static Expense createExpense(ExpenseDto expenseDto) {
-		Expense expense = new Expense();
-		expense.setId(expenseDto.getId());	
-		expense.setDate(expenseDto.getDate());
-		expense.setValue(expenseDto.getGbpValue());
-		expense.setReason(expenseDto.getReason());
-		return expense;
 	}
 
 }
