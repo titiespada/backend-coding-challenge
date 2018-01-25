@@ -33,10 +33,15 @@ app.controller("ctrlExpenses", ["$rootScope", "$scope", "config", "restalchemy",
 
 	$scope.saveExpense = function() {
 		if ($scope.expensesform.$valid) {
+			var amountArr = $scope.newExpense.amount.split(' ');
+			$scope.newExpense.amount = amountArr[0];
+			$scope.newExpense.currency = amountArr[1];
+
 			// Post the expense via REST
-			restExpenses.post($scope.newExpense).then(function() {
+			restExpenses.post($scope.newExpense).then(function(response) {
 				// Reload new expenses list
 				loadExpenses();
+				$scope.clearExpense();
 			});
 		}
 	};
@@ -47,10 +52,8 @@ app.controller("ctrlExpenses", ["$rootScope", "$scope", "config", "restalchemy",
 
 	$scope.calculateVat = function() {
 		if ($scope.newExpense.amount != null) {
-			var amountWithoutCurrency = $scope.newExpense.amount;
-			if (amountWithoutCurrency.indexOf(' EUR') != -1) {
-				amountWithoutCurrency = amountWithoutCurrency.replace(' EUR', '');
-			}
+			var amountWithoutCurrency = $scope.newExpense.amount.split(' ')[0];
+
 			var vat = amountWithoutCurrency - (amountWithoutCurrency / 1.2);
 			$scope.newExpense.vat = $filter('number')(vat, 2);
 		} else {

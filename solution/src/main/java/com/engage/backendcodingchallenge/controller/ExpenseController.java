@@ -1,6 +1,7 @@
 package com.engage.backendcodingchallenge.controller;
 
 import java.math.BigDecimal;
+import java.util.Currency;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -33,7 +34,6 @@ public class ExpenseController {
 	private static final Logger LOGGER = LoggerFactory.getLogger(ExpenseController.class);
 	
 	private static final String GBP_CURRENCY = "GBP";
-	private static final String EUR_CURRENCY = "EUR";
 	
 	@Autowired
 	private ExpenseService expenseService;
@@ -87,16 +87,13 @@ public class ExpenseController {
     }
     
     private ExpenseDto parseValueWithCurrency(ExpenseDto expenseDto) {
-    		String value = expenseDto.getValue();
-    	
-    		if (value.contains(EUR_CURRENCY)) {
-    			BigDecimal valueWithoutCurrency = new BigDecimal(value.replace(EUR_CURRENCY, "").trim());
-    			
-    			CurrencyRateDto currencyRateDto = exchangeApiService.callRestService(EUR_CURRENCY, GBP_CURRENCY);
-    			
-    			expenseDto.setGbpValue(valueWithoutCurrency.multiply(BigDecimal.valueOf(currencyRateDto.getRate())));
+    		if (expenseDto.getCurrency() == null) {
+    		    expenseDto.setGbpValue(expenseDto.getValue());
     		} else {
-    			expenseDto.setGbpValue(new BigDecimal(value));	
+    		    Currency currency = Currency.getInstance(expenseDto.getCurrency());
+            
+            CurrencyRateDto currencyRateDto = exchangeApiService.callRestService(currency.getCurrencyCode(), GBP_CURRENCY);
+            expenseDto.setGbpValue(expenseDto.getValue().multiply(BigDecimal.valueOf(currencyRateDto.getRate())));
     		}
     		
     		return expenseDto;

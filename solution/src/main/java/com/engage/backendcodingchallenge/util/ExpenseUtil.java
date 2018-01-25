@@ -23,7 +23,7 @@ public class ExpenseUtil {
         ExpenseDto dto = new ExpenseDto();
         dto.setId(model.getId());
         dto.setDate(model.getDate());
-        dto.setValue(model.getValue().toString());
+        dto.setValue(model.getValue());
         dto.setReason(model.getReason());
         dto.setGbpValue(model.getValue());
         dto.setVat(calculateVat(model.getValue()));

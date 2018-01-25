@@ -24,8 +24,9 @@ public class ExpenseDto implements Serializable {
 	
 	@NotNull
 	@JsonProperty("amount")
-	@JsonFormat(pattern = "^\\d+(\\.)\\d{2}( EUR)?$")
-	private String value;
+	private BigDecimal value;
+	
+	private String currency;
 	
 	private BigDecimal vat;
 	
@@ -59,13 +60,21 @@ public class ExpenseDto implements Serializable {
 	    }
 	}
 	
-	public String getValue() {
+	public BigDecimal getValue() {
 		return value;
 	}
 	
-	public void setValue(String value) {
+	public void setValue(BigDecimal value) {
 		this.value = value;
 	}
+	
+	public String getCurrency() {
+        return currency;
+    }
+	
+	public void setCurrency(String currency) {
+        this.currency = currency;
+    }
 	
 	public String getReason() {
 		return reason;
