@@ -2,9 +2,10 @@ package com.engage.backendcodingchallenge.controller;
 
 import static org.junit.Assert.assertEquals;
 
-import java.time.LocalDate;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 import org.junit.Test;
@@ -43,11 +44,11 @@ public class ExpenseControllerTest {
 	
 	List<Expense> mockExpenses = new ArrayList<>(
 			Arrays.asList(
-					new Expense(1, LocalDate.now(), 12.45, "Dinner"),
-					new Expense(2, LocalDate.now(), 5.99, "Pharmacy"),
-					new Expense(3, LocalDate.now(), 678.68, "House")
+					new Expense(1, new Date(), BigDecimal.valueOf(12.45), "Dinner"),
+					new Expense(2, new Date(), BigDecimal.valueOf(5.99), "Pharmacy"),
+					new Expense(3, new Date(), BigDecimal.valueOf(678.68), "House")
 			));
-	Expense mockExpense = new Expense(1, LocalDate.now(), 12.45, "Dinner");
+	Expense mockExpense = new Expense(1, new Date(), BigDecimal.valueOf(12.45), "Dinner");
 	
 	@Test
 	public void getAll() throws Exception {
@@ -85,8 +86,8 @@ public class ExpenseControllerTest {
 	public void saveGBP() throws Exception {
 		Expense newExpenseMock = new Expense();
 		newExpenseMock.setId(4);
-		newExpenseMock.setDate(LocalDate.now());
-		newExpenseMock.setValue(1.87);
+		newExpenseMock.setDate(new Date());
+		newExpenseMock.setValue(BigDecimal.valueOf(1.87));
 		newExpenseMock.setReason("Coffe");
 
 		Mockito.when(expenseService.save(Mockito.any(Expense.class))).thenReturn(newExpenseMock);
@@ -109,8 +110,8 @@ public class ExpenseControllerTest {
 	public void saveEUR() throws Exception {
 		Expense newExpenseMock = new Expense();
 		newExpenseMock.setId(4);
-		newExpenseMock.setDate(LocalDate.now());
-		newExpenseMock.setValue(1.87);
+		newExpenseMock.setDate(new Date());
+		newExpenseMock.setValue(BigDecimal.valueOf(1.87));
 		newExpenseMock.setReason("Coffe");
 		
 		CurrencyRateDto currencyRateMock = new CurrencyRateDto();

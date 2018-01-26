@@ -2,20 +2,40 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
          http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+         
+    <property name="now" value="now()" dbms="mysql" />
 
 	<changeSet id="db-changelog-1.0.xml" author="patricia.espada">
-		<sql><![CDATA[
-			CREATE TABLE `expense` (
-				`id` INT(11) NOT NULL AUTO_INCREMENT,
-				`date` DATE NOT NULL,
-				`value` DOUBLE NOT NULL,
-				`reason` VARCHAR(200) NOT NULL,
-				PRIMARY KEY (`id`)
-			);
-
-			INSERT INTO `expense` (`id`, `date`, `value`, `reason`) VALUES (1, CURDATE(), 10.59, 'Dinner'), (2, CURDATE(), 50.35, 'Gym'); 
-		]]></sql>
-		<rollback></rollback>
+		<comment>Create table expense.</comment>
+		<createTable tableName="expense">
+			<column autoIncrement="true" name="id" type="INT(11)">
+				<constraints nullable="false" primaryKey="true" />
+			</column>
+			<column name="date" type="DATE">
+				<constraints nullable="false" />
+			</column>
+			<column name="value" type="DECIMAL(15,2)">
+				<constraints nullable="false" />
+			</column>
+			<column name="reason" type="VARCHAR(200)">
+				<constraints nullable="false" />
+			</column>
+		</createTable>
+	
+		<insert tableName="expense">
+			<column name="id" value="1" />
+			<column name="date" value="${now}" />
+			<column name="value" value="10.59" />
+			<column name="reason" value="Dinner" />
+		</insert>
+	
+		<insert tableName="expense">
+			<column name="id" value="2" />
+			<column name="date" value="${now}" />
+			<column name="value" value="50.35" />
+			<column name="reason" value="Gym" />
+		</insert>
+        
 	</changeSet>
 
 </databaseChangeLog>

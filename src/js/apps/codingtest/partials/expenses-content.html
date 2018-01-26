@@ -5,11 +5,19 @@
 	</div>
 
 	<h3>Add an expense</h3>
+	<div class="message-alert success" ng-show="showSuccessMessage">
+		<span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span> 
+		{{ successMessage }}
+	</div>
+	<div class="message-alert" ng-show="showErrorMessage">
+		<span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span> 
+		{{ errorMessage }}
+	</div>
 	<form name="expensesform">
 		<ul>
 			<li>
 				<label>Date</label>
-				<input type="text" ng-required="true" ng-model="newExpense.date" ui-date="dateOptions" placeholder="dd/mm/yyyy" />
+				<input type="date" ng-required="true" ng-model="newExpense.date" ui-date="dateOptions" placeholder="dd/mm/yyyy" />
 			</li>
 			<li>
 				<label>Amount</label>

@@ -288,3 +288,29 @@ input[type="file"] {
 .alert {
 	color: @dark-red-color;
 }
+
+/* The alert message box */
+.message-alert {
+    padding: 20px;
+    background-color: @dark-red-color;
+    color: @paper-background-color;
+	margin-bottom: 15px;
+	
+	&.success {
+		background-color: @dark-green-color;
+	}
+	/* The close button */
+	span.closebtn {
+		margin-left: 15px;
+		color: @paper-background-color;
+		font-weight: bold;
+		float: right;
+		font-size: 22px;
+		line-height: 20px;
+		cursor: pointer;
+		transition: 0.3s;
+		&:hover {
+			color: @dark-overlay-color;
+		}
+	}
+}
