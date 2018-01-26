@@ -33,7 +33,3 @@ To get the application up and running, you will need to:
 1.  Compile the client (exec the command over the project root directory): `gulp dev`
 2.  Run the server (exec the command over the solution directory): `mvn clean spring-boot:run`
 3.	Run the tests (exec the command over the solution directory): `mvn clean test`
-
-# Future Improvements
-
-*   Erro Handling: to give feedback to the client side in case of error (this would be a change in server and in the client side).

@@ -1,14 +1,16 @@
 package com.engage.backendcodingchallenge.dto;
 
 import java.io.Serializable;
-import java.time.LocalDate;
+import java.math.BigDecimal;
+import java.util.Date;
 
+import javax.validation.constraints.DecimalMax;
+import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.NotBlank;
 
-import com.engage.backendcodingchallenge.model.Expense;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -19,21 +21,24 @@ public class ExpenseDto implements Serializable {
 	private Integer id;
 	
 	@NotNull
-	@JsonFormat(pattern="dd/MM/yyyy")
-	private LocalDate date;
+	@JsonFormat(pattern = "dd/MM/yyyy")
+	private Date date;
 	
 	@NotNull
 	@JsonProperty("amount")
-	@JsonFormat(pattern="^\\d+(\\.)\\d{2}( EUR)?$")
-	private String value;
+	@DecimalMin(value = "0.01", inclusive = true)
+	@DecimalMax(value = "9999999999999.99", inclusive = true)
+	private BigDecimal value;
 	
-	private Double vat;
+	private String currency;
+	
+	private BigDecimal vat;
 	
 	@NotBlank
-	@Size(max=200)
+	@Size(min = 1, max = 200)
 	private String reason;
 	
-	private Double gbpValue;
+	private BigDecimal gbpValue;
 
 	public Integer getId() {
 		return id;
@@ -43,21 +48,37 @@ public class ExpenseDto implements Serializable {
 		this.id = id;
 	}
 	
-	public LocalDate getDate() {
-		return date;
+	public Date getDate() {
+		if(date == null) {
+		    return new Date();
+		} else {
+		    return new Date(date.getTime());
+		}
 	}
 	
-	public void setDate(LocalDate date) {
-		this.date = date;
+	public void setDate(Date date) {
+	    if(date == null) {
+	        this.date = new Date();
+	    } else {
+	        this.date = new Date(date.getTime());
+	    }
 	}
 	
-	public String getValue() {
+	public BigDecimal getValue() {
 		return value;
 	}
 	
-	public void setValue(String value) {
+	public void setValue(BigDecimal value) {
 		this.value = value;
 	}
+	
+	public String getCurrency() {
+        return currency;
+    }
+	
+	public void setCurrency(String currency) {
+        this.currency = currency;
+    }
 	
 	public String getReason() {
 		return reason;
@@ -67,31 +88,25 @@ public class ExpenseDto implements Serializable {
 		this.reason = reason;
 	}
 	
-	public Double getGbpValue() {
+	public BigDecimal getGbpValue() {
 		return gbpValue;
 	}
 	
-	public void setGbpValue(Double gbpValue) {
+	public void setGbpValue(BigDecimal gbpValue) {
 		this.gbpValue = gbpValue;
 	}
 	
-	public Double getVat() {
-		return Double.valueOf(gbpValue.doubleValue() - (gbpValue.doubleValue() / 1.2));
+	public BigDecimal getVat() {
+		return this.vat;
+	}
+	
+	public void setVat(BigDecimal vat) {
+		this.vat = vat;
 	}
 	
 	@Override
 	public String toString() {
-		return "ExpenseDto [id=" + id + ", date=" + date + ", value=" + value + ", vat=" + vat + ", reason=" + reason + "]";
-	}
-
-	public static ExpenseDto createExpenseDto(Expense expense) {
-		ExpenseDto expenseDto = new ExpenseDto();
-		expenseDto.setId(expense.getId());
-		expenseDto.setDate(expense.getDate());
-		expenseDto.setValue(expense.getValue().toString());
-		expenseDto.setReason(expense.getReason());
-		expenseDto.setGbpValue(expense.getValue());
-		return expenseDto;
+		return "ExpenseDto [id=" + id + ", date=" + date + ", value=" + value + ", reason=" + reason + "]";
 	}
 
 }
