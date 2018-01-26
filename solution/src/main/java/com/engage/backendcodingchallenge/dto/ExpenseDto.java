@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
+import javax.validation.constraints.DecimalMax;
+import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -24,6 +26,8 @@ public class ExpenseDto implements Serializable {
 	
 	@NotNull
 	@JsonProperty("amount")
+	@DecimalMin(value = "0.01", inclusive = true)
+	@DecimalMax(value = "9999999999999.99", inclusive = true)
 	private BigDecimal value;
 	
 	private String currency;
@@ -31,7 +35,7 @@ public class ExpenseDto implements Serializable {
 	private BigDecimal vat;
 	
 	@NotBlank
-	@Size(max = 200)
+	@Size(min = 1, max = 200)
 	private String reason;
 	
 	private BigDecimal gbpValue;

@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.engage.backendcodingchallenge.exception.ExpenseIdNotFoundException;
 import com.engage.backendcodingchallenge.model.Expense;
 import com.engage.backendcodingchallenge.repository.ExpenseRepository;
 
@@ -26,7 +27,11 @@ public class ExpenseServiceImpl implements ExpenseService {
 
 	@Override
 	public Expense findById(Integer id) {
-		return expenseRepository.findOne(id);
+		Expense expense = expenseRepository.findOne(id);
+		if (expense == null) {
+		    throw new ExpenseIdNotFoundException(String.format("Expense not found for id %s.", id));
+		}
+		return expense;
 	}
 
 	@Override

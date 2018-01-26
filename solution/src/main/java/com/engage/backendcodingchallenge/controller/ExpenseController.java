@@ -1,7 +1,6 @@
 package com.engage.backendcodingchallenge.controller;
 
 import java.math.BigDecimal;
-import java.util.Currency;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -13,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,6 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.engage.backendcodingchallenge.dto.CurrencyRateDto;
 import com.engage.backendcodingchallenge.dto.ExpenseDto;
+import com.engage.backendcodingchallenge.exception.FormValidationException;
 import com.engage.backendcodingchallenge.model.Expense;
 import com.engage.backendcodingchallenge.service.ExchangerateApiService;
 import com.engage.backendcodingchallenge.service.ExpenseService;
@@ -59,11 +61,6 @@ public class ExpenseController {
     		LOGGER.debug("Search for expense with id {}", id);
     		
     		Expense expense = expenseService.findById(id);
-    		if (expense == null) {
-    			LOGGER.debug("Expense not found for id {}", id);
-    			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-    		}
-    		
     		ExpenseDto expenseDto = ExpenseUtil.createDto(expense);
     		
     		LOGGER.debug("Returning expense with id {}: {}", id, expenseDto);
@@ -71,14 +68,25 @@ public class ExpenseController {
     }
     
     @PostMapping
-    public ResponseEntity<ExpenseDto> save(@Valid @RequestBody(required = true) ExpenseDto expenseDto) {
+    public ResponseEntity<ExpenseDto> save(@Valid @RequestBody(required = true) ExpenseDto expenseDto, BindingResult bindingResult) {
     		LOGGER.debug("Save expense: {}", expenseDto);
     		
-    		Expense expense = ExpenseUtil.createModel(parseValueWithCurrency(expenseDto));
-    		expense = expenseService.save(expense);
-    		if (expense == null) {
-    			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    		if (bindingResult.hasErrors()) {
+    		    StringBuilder errorMessage = new StringBuilder();
+    		    bindingResult.getAllErrors().stream().forEach(e -> {
+    		        if (e instanceof FieldError) {
+    		            errorMessage.append(((FieldError) e).getField()).append(": ");
+    		        } else {
+    		            errorMessage.append(e.getObjectName()).append(": ");
+    		        }
+    		        errorMessage.append(e.getDefaultMessage()).append("\n");
+    		    });
+    		    throw new FormValidationException(errorMessage.toString());
     		}
+    		
+    		Expense expense  = expenseService.save(
+    		        ExpenseUtil.createModel(parseValueWithCurrency(expenseDto))
+    		        );
     		
     		expenseDto = ExpenseUtil.createDto(expense);
     		
@@ -90,9 +98,7 @@ public class ExpenseController {
     		if (expenseDto.getCurrency() == null) {
     		    expenseDto.setGbpValue(expenseDto.getValue());
     		} else {
-    		    Currency currency = Currency.getInstance(expenseDto.getCurrency());
-            
-            CurrencyRateDto currencyRateDto = exchangeApiService.callRestService(currency.getCurrencyCode(), GBP_CURRENCY);
+            CurrencyRateDto currencyRateDto = exchangeApiService.callRestService(expenseDto.getCurrency(), GBP_CURRENCY);
             expenseDto.setGbpValue(expenseDto.getValue().multiply(BigDecimal.valueOf(currencyRateDto.getRate())));
     		}
     		
