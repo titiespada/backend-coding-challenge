@@ -1,6 +1,5 @@
 package com.engage.backendcodingchallenge.controller;
 
-import java.math.BigDecimal;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -99,7 +98,7 @@ public class ExpenseController {
     		    expenseDto.setGbpValue(expenseDto.getValue());
     		} else {
             CurrencyRateDto currencyRateDto = exchangeApiService.callRestService(expenseDto.getCurrency(), GBP_CURRENCY);
-            expenseDto.setGbpValue(expenseDto.getValue().multiply(BigDecimal.valueOf(currencyRateDto.getRate())));
+            expenseDto.setGbpValue(ExpenseUtil.applyRate(expenseDto.getValue(), currencyRateDto.getRate()));
     		}
     		
     		return expenseDto;

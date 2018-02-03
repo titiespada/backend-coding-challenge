@@ -12,23 +12,23 @@ import com.engage.backendcodingchallenge.exception.CurrencyCodeNotSupportedExcep
 
 @Service("exchangerateApiService")
 public class ExchangerateApiServiceImpl implements ExchangerateApiService {
-	
-	private static final String EXCHANGERATE_API_URL = "https://v3.exchangerate-api.com/pair/{key}/{from}/{to}";
-	
-	@Autowired
-	private RestTemplate restTemplate;
-	
-	@Value("${exchangerate.api.key}")
-	private String exchangerateApiKey;
 
-	@Override
-	public CurrencyRateDto callRestService(String from, String to) {
-	    try {
-	        Currency.getInstance(from);
-	    } catch (IllegalArgumentException iae) {
-	        throw new CurrencyCodeNotSupportedException(String.format("The currency %s is not a valid currency code.", from));
-	    }
-		return restTemplate.getForObject(EXCHANGERATE_API_URL, CurrencyRateDto.class, exchangerateApiKey, from, to);
-	}
+    private static final String EXCHANGERATE_API_URL = "https://v3.exchangerate-api.com/pair/{key}/{from}/{to}";
+
+    @Autowired
+    private RestTemplate restTemplate;
+
+    @Value("${exchangerate.api.key}")
+    private String exchangerateApiKey;
+
+    @Override
+    public CurrencyRateDto callRestService(String from, String to) {
+        try {
+            Currency.getInstance(from);
+        } catch (IllegalArgumentException iae) {
+            throw new CurrencyCodeNotSupportedException(String.format("The currency %s is not a valid currency code.", from));
+        }
+        return restTemplate.getForObject(EXCHANGERATE_API_URL, CurrencyRateDto.class, exchangerateApiKey, from, to);
+    }
 
 }

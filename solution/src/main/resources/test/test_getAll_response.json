@@ -1,0 +1,26 @@
+[
+	{
+		"id": 1,
+		"date": "27/02/2017",
+		"vat": 2.07,
+		"reason": "Dinner",
+		"gbpValue": 12.45,
+		"amount": 12.45
+	},
+	{
+		"id": 2,
+		"date": "27/02/2017",
+		"vat": 1.0,
+		"reason": "Pharmacy",
+		"gbpValue": 5.99,
+		"amount": 5.99
+	},
+	{
+		"id": 3,
+		"date": "27/02/2017",
+		"vat": 113.11,
+		"reason": "House",
+		"gbpValue": 678.68,
+		"amount": 678.68
+	}
+]

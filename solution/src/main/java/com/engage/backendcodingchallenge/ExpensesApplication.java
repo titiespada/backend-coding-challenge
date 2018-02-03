@@ -13,15 +13,15 @@ import org.springframework.web.client.RestTemplate;
  */
 @SpringBootApplication
 public class ExpensesApplication {
-	
-	/**
-	 * Main method to start the Expenses application.
-	 * @param args
-	 */
-	public static void main(String[] args) {
-		SpringApplication.run(ExpensesApplication.class, args);
-	}
-	
+
+    /**
+     * Main method to start the Expenses application.
+     * @param args
+     */
+    public static void main(String[] args) {
+        SpringApplication.run(ExpensesApplication.class, args);
+    }
+
     @Bean
     public RestTemplate restTemplate(RestTemplateBuilder builder) {
         return builder.build();
